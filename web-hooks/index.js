@@ -23,23 +23,18 @@ const config = {
 };
 
 const enviar = async (body, arrData) => {
-	try {
-		for (let index in body) {
+	for (let index in body) {
+		const num = ((Number(index) + 1) * 100) / body.length;
+		try {
 			const result = await axios.post(urlWebHook, body[index], config);
-			const num = ((Number(index) + 1) * 100) / body.length;
-			let fixedNum = parseFloat(num).toFixed(2);
 			console.log(
-				"Status: " +
-					result.status +
-					" Trackcode: " +
-					body[index].delivery_code +
-					" Progress: " +
-					fixedNum +
-					"%",
+				`${parseFloat(num).toFixed(2)}% => {Trackcode: ${
+					body[index].delivery_code
+				}, Status: ${result.status}}`,
 			);
+		} catch (e) {
+			console.log(e.message);
 		}
-	} catch (e) {
-		console.log(e.message);
 	}
 };
 
