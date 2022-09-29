@@ -20,7 +20,7 @@ const config = {
 		"Content-type": "application/json",
 		Authorization: token,
 		// Añadir los hooksHeaders de la empresa
-		"x-api-key": "ens5oz149D3e9BQWe2dyhaWGI3jyyuTH9A8j9jW1",
+		//"x-api-key": "ens5oz149D3e9BQWe2dyhaWGI3jyyuTH9A8j9jW1",
 	},
 };
 
