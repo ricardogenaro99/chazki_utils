@@ -1,4 +1,5 @@
 require("dotenv").config();
+const fs = require("fs");
 const querys = require("./querys.js");
 const axios = require("axios").default;
 
@@ -11,13 +12,14 @@ const config = {
 	},
 };
 
-const OrderID = [
-	452603,
-];
+const ordersID = [452603];
 
 const run = async (variables) => {
-	try {
-		for (let index in variables) {
+	const arrResponse = [];
+
+	for (let index in variables) {
+		const num = (Number(index) * 100 + 100) / variables.length;
+		try {
 			const result = await axios.post(
 				process.env.BACKEND,
 				{
@@ -27,23 +29,25 @@ const run = async (variables) => {
 				config,
 			);
 
-			const num = (Number(index) * 100 + 100) / variables.length;
+			arrResponse.push({
+				orderID: variables[index].orderID,
+				...result.data,
+			});
+
 			console.log(
-				"Status: " +
-					result.status +
-					" porcentaje: " +
-					parseFloat(num).toFixed(2) +
-					"%" +
-					" ID: " +
-					variables[index].orderID,
+				`${parseFloat(num).toFixed(2)}% => {ID: ${
+					variables[index].orderID
+				} - Status: ${result.data.errors ? "Error" : "Done"}}`,
 			);
+		} catch (e) {
+			console.error(e);
 		}
-	} catch (e) {
-		console.log(e.message);
 	}
+
+	fs.writeFileSync("./result.log", JSON.stringify(arrResponse, null, 4));
 };
 
-const variables = OrderID.map((id) => {
+const variables = ordersID.map((id) => {
 	return {
 		orderID: id,
 		dataUpdOrder: {
