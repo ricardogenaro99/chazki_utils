@@ -1,0 +1,524 @@
+{
+	"info": {
+		"_postman_id": "93ba11cd-fd40-4a4d-af0b-8048a6a09b79",
+		"name": "Chazki",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20819752"
+	},
+	"item": [
+		{
+			"name": "Cfunctions",
+			"item": [
+				{
+					"name": "Cargar ordenes - Integracion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"enterpriseKey\": \"94c1403d-b264-45e7-a201-182cad6995bf\",\n    \"orders\": [\n        {\n            \"trackCode\": \"SEDEVACANTETPS-ANGEL57 62FBE3C129DE6\",\n            \"paymentProofID\": \"BOLETA\",\n            \"paymentMethodID\": \"PAGADO\",\n            \"serviceID\": \"NEXT DAY\",\n            \"packageEnvelope\": \"Caja\",\n            \"packageWeight\": 20000,\n            \"packageQuantity\": 1,\n            \"packageSizeID\": \"S\",\n            \"shipmentPrice\": \"50\",\n            \"productDescription\": \"Medalle de San Benito\",\n            \"productPrice\": \"40\",\n            \"reverseLogistic\": \"NO\",\n            \"pickUpBranchID\": \"\",\n            \"pickUpAddress\": \"Av. Abancay\",\n            \"pickUpPostalCode\": \"070001\",\n            \"pickUpAddressReference\": \"Cercado de Lima\",\n            \"pickUpPrimaryReference\": \"Lima\",\n            \"pickUpSecondaryReference\": \"LIMA\",\n            \"pickUpNotes\": \"\",\n            \"pickUpContactDocumentTypeID\": \"\",\n            \"pickUpContactDocumentNumber\": \"999999999\",\n            \"pickUpContactEmail\": \"\",\n            \"dropBranchID\": \"\",\n            \"dropAddress\": \"Av. Abancay   ,Lima,Lima,Lima\",\n            \"dropPostalCode\": \"15001\",\n            \"dropAddressReference\": \"NS\",\n            \"dropPrimaryReference\": \"Lima\",\n            \"dropSecondaryReference\": \"Lima\",\n            \"dropNotes\": \"\",\n            \"dropContactName\": \"jose lozano\",\n            \"dropContactPhone\": \"971282826\",\n            \"dropContactDocumentTypeID\": \"DNI\",\n            \"dropContactDocumentNumber\": \"99999999\",\n            \"dropContactEmail\": \"jlozano@chazki.com\",\n            \"providerID\": 57,\n            \"providerName\": \"WOOCOMM\",\n            \"packages\": [\n                {\n                    \"clientPackageID\": 12,\n                    \"envelope\": \"\",\n                    \"weight\": 20000,\n                    \"weightUnit\": \"KG\",\n                    \"size\": \"S\",\n                    \"quantity\": 1,\n                    \"name\": \"Medalle de San Benito\",\n                    \"currency\": \"\",\n                    \"unitaryProductPrice\": \"40\"\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-chazki-link-beta.cloudfunctions.net/uploadClientOrders",
+							"protocol": "https",
+							"host": [
+								"us-central1-chazki-link-beta",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"uploadClientOrders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Csvgg",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"filename\": \"csv/2022-09-23T12-40-39-257ZCarga_chaski_23092022_1100.csv\",\r\n  \"filenameUrl\": \"https://firebasestorage.googleapis.com/v0/b/chazki-link.appspot.com/o/csv%2F2022-09-23T12-40-39-257ZCarga_chaski_23092022_1100.csv?alt=media&token=cbfcea91-f5a7-4160-af02-1203fdde4fbb\",\r\n  \"userID\": \"534e5a53-2284-4800-b9dc-f3045fc84e90\",\r\n  \"enterpriseID\": 5390,\r\n  \"cityID\": 6\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/chazki-link/us-central1/csvgg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"chazki-link",
+								"us-central1",
+								"csvgg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enviar Estados Falabella",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"trackCodes\": [\r\n        \"149074189258\",\r\n        \"149074741075\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/chazki-link/us-central1/fnReintentFalabellaOrders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"chazki-link",
+								"us-central1",
+								"fnReintentFalabellaOrders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cotizador",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"routeID\":57492,\r\n    \"updateEnterprise\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://us-central1-chazki-link.cloudfunctions.net/nintendo-quotation/api/quotation/route",
+							"protocol": "https",
+							"host": [
+								"us-central1-chazki-link",
+								"cloudfunctions",
+								"net"
+							],
+							"path": [
+								"nintendo-quotation",
+								"api",
+								"quotation",
+								"route"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createPDFByRoute",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"routeID\": 59462\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5001/chazki-link/us-central1/createPDFByRoute",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"chazki-link",
+								"us-central1",
+								"createPDFByRoute"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Graphql",
+			"item": [
+				{
+					"name": "GetStocksByFilters",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  GetStocksByFilters: getStocksByFilters(trackCode: \"testprod047\", dispatched:true) {\r\n    count\r\n    rows {\r\n      id\r\n      Locationbranch {\r\n        name\r\n      }\r\n      Order {\r\n        id\r\n        trackCode\r\n        Enterprise {\r\n          businessName\r\n          comercialName\r\n        }\r\n        Status {\r\n          subclass\r\n        }\r\n        updatedAt\r\n        createdAt\r\n        City {\r\n          id\r\n          name\r\n        }\r\n      }\r\n      enterDate\r\n      dispatched\r\n      dispatchedDate\r\n      updatedAt\r\n      quantity\r\n      anticuamiento\r\n    }\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:2500/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2500",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ward => Preplanning",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\r\n  updateOrderTo(orderIDs: [513253], stateFrom: 182){\r\n    statusCode\r\n    message\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{BACK_CLOUD}}",
+							"host": [
+								"{{BACK_CLOUD}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar precio ruta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\r\n  updatePriceRoute(routeID: 59388){\r\n    statusCode\r\n    motive\r\n    message\r\n    extra{\r\n      priceRoute\r\n    }\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{BACK_CLOUD}}",
+							"host": [
+								"{{BACK_CLOUD}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRoutesForTracking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query  {\r\n  getRoutesForTracking(enterpriseID: 13793, offset: 0, limit: 10) {\r\n    count\r\n    rows {\r\n      id\r\n      routeCode\r\n      createdAt\r\n      deliveries\r\n      priceEnterprise\r\n      priceEnterpriseOriginal\r\n      routeAlias\r\n      originalRouteID\r\n      meta {\r\n        key\r\n        value\r\n      }\r\n      Status {\r\n        subtype\r\n        subclass\r\n      }\r\n      OrderServices {\r\n        Orders {\r\n          pickUpAddress\r\n        }\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{BACK_CLOUD}}",
+							"host": [
+								"{{BACK_CLOUD}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRoute",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getRoute($routeID: Int!) {\r\n  GetRoute: getRoute(routeID: $routeID) {\r\n    cityID\r\n    routeCode\r\n    routeAlias\r\n    statusID\r\n    vehicleTypeID\r\n    Affiliates {\r\n      userID\r\n      isConnected\r\n      User {\r\n        names\r\n        lastname\r\n        picture\r\n      }\r\n    }\r\n    ordersWithCFDI\r\n  }\r\n}\r\n",
+								"variables": "{\r\n  \"routeID\": 58472\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{BACK_CLOUD}}",
+							"host": [
+								"{{BACK_CLOUD}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reprogramar-reorfertar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\r\n  reofferOrdersByRequest(orderIDs: [928759]){\r\n    createdID\r\n    message\r\n    messages\r\n    motive\r\n    statusCode\r\n  }\r\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{BACK_CLOUD}}",
+							"host": [
+								"{{BACK_CLOUD}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar estado de driver",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation updateStatusAffiliates($userIDs: [String!]!, $statusID: Int!) {\r\n  updateStatusAffiliates(userIDs: $userIDs, statusID: $statusID) {\r\n    message\r\n    motive\r\n    statusCode\r\n  }\r\n}\r\n",
+								"variables": "{\r\n  \"userIDs\": [\r\n    \"0e02966d-8b16-4ba9-acf9-788b7d1151f8\"\r\n  ],\r\n  \"statusID\": 84\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{BACK_LOCAL}}",
+							"host": [
+								"{{BACK_LOCAL}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rutas preliminares",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getPreliminarRoutes($trackCode: String, $routeAlias: String, $enterpriseID: Int, $validated: Boolean, $vehicleType: Int, $statusIDs: [Int], $classificationOrderIDs: [Int], $orderBy: RouteOrderByInput, $limit: Int!, $offset: Int!) {\r\n  GetPreliminarRoutes: getPreliminarRoutes(trackCode: $trackCode, routeAlias: $routeAlias, enterpriseID: $enterpriseID, validated: $validated, orderBy: $orderBy, vehicleTypeID: $vehicleType, statusIDs: $statusIDs, classificationOrderIDs: $classificationOrderIDs, limit: $limit, offset: $offset) {\r\n    rows {\r\n      id\r\n      hasIncentive\r\n      createdAt\r\n      estimatedStartTime\r\n      routeCode\r\n      deliveries\r\n      validated\r\n      assignedQuantity\r\n      zones\r\n      routeAlias\r\n      quantityPackages\r\n      quantityTrackCodes\r\n      statusID\r\n      Status {\r\n        subclass\r\n      }\r\n      Affiliates {\r\n        userID\r\n        User {\r\n          names\r\n          lastname\r\n        }\r\n      }\r\n      StartPolygon {\r\n        name\r\n      }\r\n      EndPolygon {\r\n        name\r\n      }\r\n      pickUps\r\n      estimatedTotalDistance\r\n      estimatedDuration\r\n      estimatedPrice\r\n      vehicleTypeID\r\n      VehicleType {\r\n        class\r\n        subclass\r\n      }\r\n    }\r\n    count\r\n  }\r\n}\r\n",
+								"variables": "{\r\n  \"limit\": 100,\r\n  \"offset\": 0,\r\n  \"isRouteTracking\": true,\r\n  \"statusIDs\": [\r\n    179\r\n  ],\r\n  \"classificationOrderIDs\": [\r\n    200\r\n  ]\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{BACK_CLOUD}}",
+							"host": [
+								"{{BACK_CLOUD}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Header Autocomplete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query autoCompleteTCAffiliates($searchText: String!) {\r\n  AutoCompleteTCAffiliates: autoCompleteTCAffiliates(searchText: $searchText) {\r\n    id\r\n    text\r\n    type\r\n    subtype\r\n    polygonID\r\n  }\r\n}\r\n",
+								"variables": "{\r\n  \"searchText\": \"asd\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{BACK_CLOUD}}",
+							"host": [
+								"{{BACK_CLOUD}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pre planiamiento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOrdersPrePlanning($trackCodes: [String], $packageSizeIDs: [Int], $enterprisesID: [Int], $pickUpBranchIDs: [Int], $serviceID: [Int], $polygonsID: [Int], $pickUpPolygonIDs: [Int], $dateCreatedOrder: OrdersDateRangeInput, $dateDeliveryOrder: DeliveryDateRangeInput, $limit: Int, $offset: Int, $classificationOrderIDs: [Int]) {\r\n  GetOrdersPrePlanning: getOrdersPrePlanning(trackCodes: $trackCodes, classificationOrderIDs: $classificationOrderIDs, packageSizeIDs: $packageSizeIDs, enterprisesID: $enterprisesID, pickUpBranchIDs: $pickUpBranchIDs, serviceIDs: $serviceID, polygonsID: $polygonsID, pickUpPolygonIDs: $pickUpPolygonIDs, dateCreatedOrder: $dateCreatedOrder, dateDeliveryOrder: $dateDeliveryOrder, orderBy: {id: DESC}, limit: $limit, offset: $offset) {\r\n    rows {\r\n      Status {\r\n        subclass\r\n      }\r\n      id\r\n      originalOrderID\r\n      trackCode\r\n      collect\r\n      deliver\r\n      pickUpAddress\r\n      dropAddress\r\n      isInTheoreticalRouteCollect\r\n      isInTheoreticalRouteDeliver\r\n      createdAt\r\n      Enterprise {\r\n        comercialName\r\n      }\r\n      PickUpBranch {\r\n        id\r\n        branchOfficeName\r\n      }\r\n      Status {\r\n        subclass\r\n      }\r\n      Service {\r\n        name\r\n        attentionSchedule {\r\n          startHour\r\n          endHour\r\n          attentionDays\r\n        }\r\n      }\r\n      Polygon {\r\n        id\r\n        name\r\n      }\r\n      PickUpPolygon {\r\n        name\r\n      }\r\n      PackageSizeID {\r\n        name\r\n      }\r\n      packageQuantity\r\n      packageWeight\r\n      deliveryDate\r\n    }\r\n    count\r\n    quantityOrdersUltMillaAndRepro\r\n    quantityOrdersRecolecAndDevol\r\n  }\r\n}\r\n",
+								"variables": "{\r\n  \"serviceID\": [],\r\n  \"enterprisesID\": [\r\n    4699\r\n  ],\r\n  \"classificationOrderIDs\": [\r\n    200\r\n  ],\r\n  \"dateCreatedOrder\": {\r\n    \"createdAt\": {\r\n      \"greaterEqual\": \"2022-09-23T05:11:00.213Z\",\r\n      \"lessEqual\": \"2022-09-24T04:11:00.213Z\"\r\n    }\r\n  },\r\n  \"limit\": 12,\r\n  \"offset\": 0\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{BACK_CLOUD}}",
+							"host": [
+								"{{BACK_CLOUD}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pre afiliados - getAffiliateByStep",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getAffiliateByStep($cityID: Int, $stepID: Int, $vehicleTypeID: Int) {\r\n  GetAffiliateByStep: getAffiliateByStep(cityID: $cityID, stepID: $stepID, vehicleTypeID: $vehicleTypeID) {\r\n    step {\r\n      id\r\n      name\r\n      cityID\r\n      showIndicator\r\n      Affiliate {\r\n        userID\r\n        createdAt\r\n        paymentVoucher\r\n        hasError\r\n        User {\r\n          names\r\n          lastname\r\n          documentNumber\r\n          DocumentType {\r\n            subtype\r\n            subclass\r\n          }\r\n        }\r\n      }\r\n    }\r\n    upAffiliate {\r\n      userID\r\n      createdAt\r\n      User {\r\n        names\r\n        lastname\r\n        documentNumber\r\n        DocumentType {\r\n          subtype\r\n          subclass\r\n        }\r\n      }\r\n    }\r\n    rejectAffiliate {\r\n      userID\r\n      createdAt\r\n      User {\r\n        names\r\n        lastname\r\n        documentNumber\r\n        DocumentType {\r\n          subtype\r\n          subclass\r\n        }\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n  \"cityID\": 6\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{BACK_CLOUD}}",
+							"host": [
+								"{{BACK_CLOUD}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Public TrackCode",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query getOrderPublicTrackCode($trackCode: String!) {\r\n  OrderPublicTrackCode: getOrderPublicTrackCode(trackCode: $trackCode) {\r\n    id\r\n    trackCode\r\n    Enterprise {\r\n      businessName\r\n      comercialName\r\n    }\r\n  }\r\n}\r\n",
+								"variables": "{\r\n  \"trackCode\": \"149074917609\"\r\n}"
+							}
+						},
+						"url": {
+							"raw": "{{BACK_CLOUD}}",
+							"host": [
+								"{{BACK_CLOUD}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mantenimiento de ordenes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "PfmUGFbqXzkYTq5eXaUHllUkYX-7w6YnTV1LPdBdt-Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "#TENER CUIDADO CON ESTO :,V\r\nmutation updateOrderData($orderID: Int!, $dataUpdOrder: OrderInput) {\r\n  updateOrderData: updateOrderData(orderID: $orderID, dataUpdOrder: $dataUpdOrder) {\r\n    message\r\n    motive\r\n    statusCode\r\n  }\r\n}",
+								"variables": "{\r\n  \"orderID\": ,\r\n  \"dataUpdOrder\": {\r\n    \"statusID\": 166\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "https://backend.chazki.com/",
+							"protocol": "https",
+							"host": [
+								"backend",
+								"chazki",
+								"com"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{BEARER_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BEARER_TOKEN",
+			"value": "M9pHixkMLR-wHQgIOqnCKu46KLFmWJbbSlN2tWxXZOx",
+			"type": "string"
+		},
+		{
+			"key": "BACK_LOCAL",
+			"value": "localhost:2500",
+			"type": "string"
+		},
+		{
+			"key": "BACK_CLOUD",
+			"value": "https://backend.chazki.com/",
+			"type": "string"
+		},
+		{
+			"key": "BACK_CLOUD_BETA",
+			"value": "https://backend-beta.chazki.com/",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "BACK_CLOUD_DEV",
+			"value": "https://backend-dev.chazki.com/",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}
