@@ -13,13 +13,18 @@ const config = {
 	},
 };
 
-const ordersID = [452603];
+const ordersID = [
+	979684, 938449, 948034, 972923, 927828, 919737, 921511, 939025, 936447,
+	936730, 936596, 939262, 946382, 947838, 957518, 947958, 947840, 946340,
+	947961, 947839, 947842, 946697, 946468, 959408, 963499, 958821, 962811,
+	966572, 966323, 972247, 979858, 992545, 1002787, 1008622, 1008700,
+];
 
 const variables = ordersID.map((id) => {
 	return {
 		orderID: id,
 		dataUpdOrder: {
-			statusID: 166,
+			statusID: 170,
 			incidenceID: null,
 		},
 	};
@@ -58,4 +63,4 @@ const run = async (variables) => {
 	fs.writeFileSync("./result.log", JSON.stringify(arrResponse, null, 4));
 };
 
-// run(variables);
+run(variables);
