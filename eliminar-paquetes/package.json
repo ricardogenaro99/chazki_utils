@@ -1,13 +1,16 @@
 {
-  "name": "dividir-arrays",
+  "name": "eliminar-paquetes",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "license": "MIT",
   "scripts": {
     "start": "node index.js"
   },
+  "keywords": [],
   "author": "",
-  "description": "",
+  "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.3",
+    "pg": "^8.8.0"
   }
 }

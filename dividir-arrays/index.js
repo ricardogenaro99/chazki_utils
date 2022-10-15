@@ -1,5 +1,9 @@
+require('dotenv').config();
+const client = require('./db')
 const fs = require("fs");
 const DATA = require("./data.json");
+
+client.connect()
 
 const partition = (n) => {
 	const quantity = Math.round(DATA.length / n);
@@ -13,7 +17,10 @@ const partition = (n) => {
 		const part = DATA.slice(desde, hasta);
 		console.log(part);
 
-		fs.writeFileSync(`./partitions/part-${desde}-${hasta}.json`, JSON.stringify(part,null,4));
+		fs.writeFileSync(
+			`./partitions/part-${desde}-${hasta}.txt`,
+			JSON.stringify(part).replace("[", "").replace("]", ""),
+		);
 	}
 };
 
