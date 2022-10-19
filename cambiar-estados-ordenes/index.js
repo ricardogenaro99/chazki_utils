@@ -13,13 +13,7 @@ const config = {
 	},
 };
 
-const ordersID = [
-	1028178,
-1027501,
-1028159,
-1028155,
-1028187,
-];
+const ordersID = [];
 
 const variables = ordersID.map((id) => {
 	return {
