@@ -1,2 +1,3 @@
-const DATA = [2100052, 2100137];
+const DATA = []
+
 module.exports = { DATA };
