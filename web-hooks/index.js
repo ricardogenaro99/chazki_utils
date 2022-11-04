@@ -20,6 +20,7 @@ const config = {
 		"Content-type": "application/json",
 		Authorization: token,
 		// Añadir los hooksHeaders de la empresa
+		"x-api-key": "ens5oz149D3e9BQWe2dyhaWGI3jyyuTH9A8j9jW1"	
 	},
 };
 
@@ -37,7 +38,7 @@ const enviar = async (body, arrData) => {
 			});
 
 			console.log(
-				`${parseFloat(num).toFixed(2)}% => {Trackcode: ${
+				`${parseFloat(num).toFixed(4)}% => {Trackcode: ${
 					body[index].delivery_code
 				}, Status: ${result.data.errorMessage ? "Error" : "Done"}}`,
 			);

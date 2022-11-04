@@ -29,9 +29,8 @@ const body = tmp.map((item) => {
 		enterpriseKey: item.EnterpriseKey,
 		orders: {
 			...order,
-			dropContactPhone: order.dropContactPhone
-				? order.dropContactPhone
-				: "111111111111",
+			dropContactPhone: "111111111111",
+			dropContactEmail: "prueba@prueba.com",
 		},
 	};
 });
