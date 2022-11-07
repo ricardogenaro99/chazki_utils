@@ -25,14 +25,16 @@ DATA.forEach((e) => {
 const body = tmp.map((item) => {
 	const order = JSON.parse(item.Info);
 
-	return {
+	const tmp = {
 		enterpriseKey: item.EnterpriseKey,
 		orders: {
 			...order,
-			dropContactPhone: "111111111111",
-			dropContactEmail: "prueba@prueba.com",
 		},
-	};
+	}
+
+	delete tmp.orders.pickUpPoint
+
+	return tmp;
 });
 
 const enviar = async (body) => {

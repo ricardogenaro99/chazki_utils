@@ -11,8 +11,8 @@ const arrResult = {
 };
 
 const DATA = trackcodes.map((e) => {
-	return { warehouseID: 1, enterpriseId: 4543, trackcode: e, cityID: 1 };
-	// return { warehouseID: 1, enterpriseId: 13734, trackcode: e, cityID: 1 };
+	// RECUERDEN CAMBIAR EL WAREHOUSEID, ENTERPRISEID Y CITYID SEGUN LO QUE NECESITEN
+	return { warehouseID: 0, enterpriseId: 0, trackcode: e, cityID: 0 };
 });
 
 const run = async () => {
@@ -31,7 +31,7 @@ const run = async () => {
 						" porcentaje: " +
 						parseFloat(num).toFixed(4) +
 						"%" +
-						"Trackcode: " +
+						" Trackcode: " +
 						element.trackcode;
 
 					console.log(msg);

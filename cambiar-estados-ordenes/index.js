@@ -13,19 +13,14 @@ const config = {
 	},
 };
 
-const ordersID = [
-	1168335, 1168348, 1172469, 1172825, 1172876, 1172877, 1172879, 1172884,
-	1172940, 1172966, 1173038, 1173059, 1173131, 1173144, 1173159, 1173181,
-	1173285, 1173294, 1173299, 1173301, 1173302, 1173353, 1173354, 1173359,
-	1173421, 1173425, 1173472, 1174072, 1174163, 1174280, 1174662, 1175274,
-];
+const ordersID = [];
 
 const variables = ordersID.map((id) => {
 	return {
 		orderID: id,
 		dataUpdOrder: {
-			statusID: 169,
-			incidenceID: 26,
+			statusID: 170,
+			incidenceID: null,
 		},
 	};
 });
@@ -51,7 +46,7 @@ const run = async (variables) => {
 			});
 
 			console.log(
-				`${parseFloat(num).toFixed(2)}% => {ID: ${
+				`${parseFloat(num).toFixed(4)}% => {ID: ${
 					variables[index].orderID
 				}, Status: ${result.data.errors ? "Error" : "Done"}}`,
 			);

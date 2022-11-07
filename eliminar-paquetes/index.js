@@ -3,17 +3,29 @@ const fs = require("fs");
 const client = require("./db");
 const queryDelete = require("./querys");
 
-const orderIDs = [360317, 360319, 360321];
+// Orders ID
+const DATA = [];
 
-const run =  () => {
-	client.connect();
-	const response = [];
-	orderIDs.forEach(async (id) => {
-		const res = await client.query(queryDelete(id));
-		response.push(res);
-		console.log(res);
-	});
-	return response;
+const generateLoader = (index, type = "DONE") => {
+	const num = (Number(index) * 100 + 100) / DATA.length;
+	return `${parseFloat(num).toFixed(4)}% ==> ID: ${DATA.at(index)} - ${type}`;
 };
 
-fs.writeFileSync("response.log", JSON.stringify(run(), null, 2));
+const run = () => {
+	client.connect();
+	DATA.forEach(async (id, index) => {
+		try {
+			const res = await client.query(queryDelete(id));
+			console.log(generateLoader(index));
+			console.log(
+				"DELETED COUNT => %s \n",
+				JSON.stringify(res.map((e) => e.rowCount)),
+			);
+		} catch (error) {
+			console.log(generateLoader(index, "ERROR"));
+			console.log("ERROR => %s \n", JSON.stringify(error));
+		}
+	});
+};
+
+run();
