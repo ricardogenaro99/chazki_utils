@@ -34,12 +34,12 @@ const run = async () => {
 				});
 			} catch (error) {
 				arrResult.responseError.push({ id, error });
-				fs.writeFileSync("response.log", JSON.stringify(arrResult, null, 2));
+				fs.writeFileSync("result.log", JSON.stringify(arrResult, null, 2));
 			}
 		});
 	} catch (error) {
 		arrResult.generalError.push({ error });
-		fs.writeFileSync("response.log", JSON.stringify(arrResult, null, 2));
+		fs.writeFileSync("result.log", JSON.stringify(arrResult, null, 2));
 	}
 };
 
