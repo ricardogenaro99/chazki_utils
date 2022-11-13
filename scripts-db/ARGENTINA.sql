@@ -41,17 +41,9 @@ order by A.id desc
 
 select * from "Routes" r where "routeCode" = '41fdfb24'
 
-select * from "Orders" o where "trackCode" in ('C203100960',
-'C203103046',
-'C203103183',
-'C203102606',
-'C203102384',
-'PSASLRPRS183162601',
-'DOL8425490887',
-'41690597624',
-'41689602020',
-'41690157506',
-'41690385233')
+select "createdAt" , * from "Orders" o where "trackCode" in ('PSAPRS183916801')
+
+select * from "CSVHistorial" c where id = 1700065
 
 select * from "OrderService" os where os."orderID"  = 1018795
 

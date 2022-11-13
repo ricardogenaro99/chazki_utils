@@ -1,37 +1,37 @@
-select * from "Enterprises" e where "comercialName" ilike '%suck%'
+select * from "Enterprises" e where "enterpriseKey" = '8488efb6-4cdc-4b3f-af9e-65ceaccf7758'
 
-select A.* from (
+select 
+distinct A."orderInfoData" ->'trackCode'->>'value' ,  
+A."orderInfoData" ->'dropPoint'->>'coordinates', A."orderInfoData" ->'pickUpPoint'->>'coordinates' ,
+A."orderInfoData" ->'pickUpNotes'->>'value'
+--A.*
+from (
 	select * from "OriginalOrders" oo where 
-	/*"csvHistorialID" in (
-	select c.id  from "CSVHistorial" c where c."enterpriseID" = 4523
-	) and*/ "createdAt" between '2022-9-21' and '2022-11-30'
-) as A
-where A."orderInfoData" ->'trackCode'->>'value' ilike '%VELAQUIN170%'
-
-
-select * from "OriginalOrders" oo where id in (2051566)
-
-
-select * from "OriginalOrders" oo where "csvHistorialID" in (select c.id  from "CSVHistorial" c where c."enterpriseID" = 5344) --and oo.extra is not null 
+	"csvHistorialID" in ( 
+		select c.id  from "CSVHistorial" c where c."enterpriseID" = 4523 and c."createdAt" between '2022-11-02' and '2022-11-04' 
+	) 
+) as A  where A."orderInfoData" ->'trackCode'->>'value' in ('41770592498' );
+--order by A.id desc
 
 
 
-select "createdAt" , "trackCode" , "pickUpAddress" , "dropPoint" , "dropAddress" , * from "Orders" o where "trackCode"in ('MIA00129032CL',
-'MIA00133121CL',
-'MIA00134153CL',
-'MIA00134923CL',
-'MIA00134627CL')
+select * from "OriginalOrders" oo where 
+	"csvHistorialID" in ( 
+		select c.id  from "CSVHistorial" c where c."enterpriseID" = 5448 and c."createdAt" between '2022-11-02' and '2022-11-19' 
+	) and "orderInfoData" ->'trackCode'->>'value' in ('1274600501942-01') 
 
 
 
-select * from "CSVHistorial" c where "enterpriseID" = 5344 and "createdAt" between '2022-09-07' and '2022-09-09' order by id desc 
+	
+	
+select * from "OriginalOrders" oo where id = 2729037
 
-select o."trackCode" , o."originalOrderID"  from "Orders" o where  "enterpriseID" = 5344 and "createdAt" between '2022-09-07' and '2022-09-09' and "trackCode" = 'MIA00108872CL'
 
 
 
-SELECT id, A."orderInfoData" ->'trackCode'->>'value'
-FROM (  SELECT  *, 
-                COUNT(*) OVER(PARTITION BY "orderInfoData" ->'trackCode'->>'value') N
-        FROM "OriginalOrders") as A
-WHERE N > 1
+select "serviceIDs" , multiplace , "enterpriseConfig" , * from "Enterprises" e where id = 5451
+
+
+select * from "Branches" b where "enterpriseID" = 5451
+
+
