@@ -67,4 +67,7 @@ const run = async () => {
 	}
 };
 
-run();
+setInterval(() => {
+	console.log(1)
+}, 1 * 1000 );
+// run();
