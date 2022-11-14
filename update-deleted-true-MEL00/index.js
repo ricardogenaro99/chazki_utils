@@ -41,6 +41,7 @@ const runUpdate = async (data, queryUpdate) => {
 
 const run = async () => {
 	try {
+		console.log(`\n### Starting process (${new Date()})`);
 		console.log("Searching records in Sonic...");
 		await runCount();
 		if (ordersID.length === 0 && originalOrdersID.length === 0) {
