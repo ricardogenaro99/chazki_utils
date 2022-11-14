@@ -1,5 +1,10 @@
 require("dotenv").config();
-const { clientNintendo, clientSonic } = require("./db");
+const {
+	// clientNintendo,
+	// clientSonic,
+	newClientSonic,
+	newClientNintendo,
+} = require("./db");
 const {
 	queryCountOrders,
 	queryCountOriginalOrders,
@@ -10,20 +15,30 @@ const {
 const ordersID = [];
 const originalOrdersID = [];
 
+let clientNintendo = null;
+let clientSonic = null;
+
 const runCount = async () => {
 	try {
-		await clientSonic.connect();
-		const rowsOrdersID = await clientSonic.query(queryCountOrders());
-		const rowsOriginalOrdersID = await clientSonic.query(
-			queryCountOriginalOrders(),
-		);
+		clientSonic = newClientSonic();
+		try {
+			console.log("=> Connect client Sonic...");
+			await clientSonic.connect();
+			const rowsOrdersID = await clientSonic.query(queryCountOrders());
+			const rowsOriginalOrdersID = await clientSonic.query(
+				queryCountOriginalOrders(),
+			);
 
-		ordersID.push(...rowsOrdersID.rows.map((e) => e.id));
-		originalOrdersID.push(...rowsOriginalOrdersID.rows.map((e) => e.id));
+			ordersID.push(...rowsOrdersID.rows.map((e) => e.id));
+			originalOrdersID.push(...rowsOriginalOrdersID.rows.map((e) => e.id));
+		} catch (error) {
+			console.error({ function: "runCount => client", error });
+		} finally {
+			console.log("=> End client Sonic...");
+			await clientSonic.end();
+		}
 	} catch (error) {
 		console.error({ function: "runCount", error });
-	} finally {
-		clientSonic.end();
 	}
 };
 
@@ -48,20 +63,28 @@ const run = async () => {
 			console.log("No records found");
 			return;
 		}
+
 		try {
-			await clientNintendo.connect();
-			if (ordersID.length > 0) {
-				console.log("Update Orders in Nintendo...");
-				await runUpdate(ordersID, queryUpdateOrder);
-			}
-			if (originalOrdersID.length > 0) {
-				console.log("Update OriginalOrders in Nintendo...");
-				await runUpdate(originalOrdersID, queryUpdateOriginalOrder);
+			clientNintendo = newClientNintendo();
+			try {
+				console.log("=> Connect client Nintendo...");
+				await clientNintendo.connect();
+				if (ordersID.length > 0) {
+					console.log("Update Orders in Nintendo...");
+					await runUpdate(ordersID, queryUpdateOrder);
+				}
+				if (originalOrdersID.length > 0) {
+					console.log("Update OriginalOrders in Nintendo...");
+					await runUpdate(originalOrdersID, queryUpdateOriginalOrder);
+				}
+			} catch (error) {
+				console.error({ function: "run => client => block updates", error });
+			} finally {
+				console.log("=> End client Nintendo...");
+				await clientNintendo.end();
 			}
 		} catch (error) {
-			console.error({ function: "run => block updates", error });
-		} finally {
-			clientNintendo.end();
+			console.error({ function: "run => client", error });
 		}
 	} catch (error) {
 		console.error({ function: "run", error });
@@ -69,6 +92,7 @@ const run = async () => {
 };
 
 run();
+
 setInterval(() => {
 	run();
-}, 10 * 60 * 1000 );
+}, 15 * 60 * 1000);

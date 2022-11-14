@@ -19,7 +19,12 @@ const confSonic = {
 const clientSonic = new Client(confSonic);
 const clientNintendo = new Client(confNintendo);
 
+const newClientSonic = () => new Client(confSonic);
+const newClientNintendo = () => new Client(confNintendo);
+
 module.exports = {
 	clientNintendo,
 	clientSonic,
+	newClientSonic,
+	newClientNintendo,
 };
