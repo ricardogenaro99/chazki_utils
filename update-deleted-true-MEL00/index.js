@@ -1,7 +1,5 @@
 require("dotenv").config();
 const {
-	// clientNintendo,
-	// clientSonic,
 	newClientSonic,
 	newClientNintendo,
 } = require("./db");
@@ -22,7 +20,7 @@ const runCount = async () => {
 	try {
 		clientSonic = newClientSonic();
 		try {
-			console.log("=> Connect client Sonic...");
+			console.log("* Connect client Sonic...");
 			await clientSonic.connect();
 			const rowsOrdersID = await clientSonic.query(queryCountOrders());
 			const rowsOriginalOrdersID = await clientSonic.query(
@@ -34,7 +32,7 @@ const runCount = async () => {
 		} catch (error) {
 			console.error({ function: "runCount => client", error });
 		} finally {
-			console.log("=> End client Sonic...");
+			console.log("* End client Sonic...");
 			await clientSonic.end();
 		}
 	} catch (error) {
@@ -44,7 +42,7 @@ const runCount = async () => {
 
 const runUpdate = async (data, queryUpdate) => {
 	try {
-		console.log(`=> Length: ${data.length}`);
+		console.log(`\t=> Length: ${data.length}`);
 		const resUpdate = await data.map(async (id) =>
 			clientNintendo.query(queryUpdate(id)),
 		);
@@ -67,7 +65,7 @@ const run = async () => {
 		try {
 			clientNintendo = newClientNintendo();
 			try {
-				console.log("=> Connect client Nintendo...");
+				console.log("* Connect client Nintendo...");
 				await clientNintendo.connect();
 				if (ordersID.length > 0) {
 					console.log("Update Orders in Nintendo...");
@@ -80,7 +78,7 @@ const run = async () => {
 			} catch (error) {
 				console.error({ function: "run => client => block updates", error });
 			} finally {
-				console.log("=> End client Nintendo...");
+				console.log("* End client Nintendo...");
 				await clientNintendo.end();
 			}
 		} catch (error) {
