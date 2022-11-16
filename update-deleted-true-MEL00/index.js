@@ -1,8 +1,5 @@
 require("dotenv").config();
-const {
-	newClientSonic,
-	newClientNintendo,
-} = require("./db");
+const { newClientSonic, newClientNintendo } = require("./db");
 const {
 	queryCountOrders,
 	queryCountOriginalOrders,
@@ -10,9 +7,8 @@ const {
 	queryUpdateOriginalOrder,
 } = require("./querys");
 
-const ordersID = [];
-const originalOrdersID = [];
-
+let ordersID = [];
+let originalOrdersID = [];
 let clientNintendo = null;
 let clientSonic = null;
 
@@ -53,6 +49,8 @@ const runUpdate = async (data, queryUpdate) => {
 };
 
 const run = async () => {
+	ordersID = [];
+	originalOrdersID = [];
 	try {
 		console.log(`\n### Starting process (${new Date()})`);
 		console.log("Searching records in Sonic...");
