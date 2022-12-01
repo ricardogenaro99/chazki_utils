@@ -1,3 +1,4 @@
+require("dotenv").config();
 const axios = require("axios");
 const fs = require("fs");
 const DATA = require("./data");
@@ -50,18 +51,34 @@ const sendOrders = async (orders = []) => {
 			contador(num, orders[index], status);
 		}
 	}
-	await fs.writeFileSync("./logs/result.log", JSON.stringify(arrResponse, null, 2));
+	await fs.writeFileSync(
+		"./logs/result.log",
+		JSON.stringify(arrResponse, null, 2),
+	);
 };
 
 const updateIntegrationLogs = async (orders, queryUpdate) => {
-	console.log("Actualizar tabla Integration Logs =>", orders.length);
+	console.log("Actualizar tabla IntegrationLogs =>", orders.length);
+	const clientNintendo = newClientNintendo();
 	try {
-		const resUpdate = await orders.map(
-			async (order) => await newClientNintendo.query(queryUpdate(order)),
-		);
-		await Promise.all(resUpdate);
+		await clientNintendo.connect();
+		let status = "";
+		for (let index in orders) {
+			const num = (Number(index) * 100 + 100) / orders.length;
+			try {
+				await clientNintendo.query(queryUpdate(orders[index]));
+				status = "Done";
+			} catch (error) {
+				status = "Error";
+				console.error(error);
+			} finally {
+				contador(num, orders[index], status);
+			}
+		}
 	} catch (error) {
-		console.error({ function: "runUpdate", error });
+		console.error(error);
+	} finally {
+		clientNintendo.end();
 	}
 };
 
@@ -75,9 +92,12 @@ const run = async () => {
 		.filter((e) => e.status === "Error")
 		.map((e) => e.order);
 
-	await fs.writeFileSync("./logs/done.log", JSON.stringify(arrDone, null, 2));
-	await fs.writeFileSync("./logs/error.log", JSON.stringify(arrError, null, 2));
-	// await updateIntegrationLogs(arrDone, queryUpdateIntegrationLogs);
+	fs.writeFileSync("./logs/done.log", JSON.stringify(arrDone, null, 2));
+	fs.writeFileSync("./logs/error.log", JSON.stringify(arrError, null, 2));
+
+	if (arrDone.length > 0) {
+		await updateIntegrationLogs(arrDone, queryUpdateIntegrationLogs);
+	}
 };
 
 run();

@@ -1,9 +1,5 @@
-require('dotenv').config();
-const client = require('./db')
 const fs = require("fs");
-const DATA = require("./data.json");
-
-client.connect()
+const DATA = require("./data.js");
 
 const partition = (n) => {
 	const quantity = Math.round(DATA.length / n);
@@ -24,4 +20,4 @@ const partition = (n) => {
 	}
 };
 
-partition(17);
+partition(3);

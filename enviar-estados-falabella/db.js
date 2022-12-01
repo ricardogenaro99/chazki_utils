@@ -8,7 +8,7 @@ const confNintendo = {
 	port: 5432,
 };
 
-const newClientNintendo = new Client(confNintendo);
+const newClientNintendo = () => new Client(confNintendo);
 
 module.exports = {
 	newClientNintendo,
