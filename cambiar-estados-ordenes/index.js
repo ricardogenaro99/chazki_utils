@@ -13,13 +13,13 @@ const config = {
 	},
 };
 
-const ordersID = [];
+const ordersID = [1253414];
 
 const variables = ordersID.map((id) => {
 	return {
 		orderID: id,
 		dataUpdOrder: {
-			statusID: ,
+			statusID: 154,
 			incidenceID: null,
 		},
 	};
