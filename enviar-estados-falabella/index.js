@@ -5,8 +5,8 @@ const DATA = require("./data");
 const { newClientNintendo } = require("./db");
 const { queryUpdateIntegrationLogs } = require("./querys");
 
-const URL =
-	"http://localhost:5001/chazki-link/us-central1/fnReintentFalabellaOrders";
+//const URL = "http://localhost:5001/chazki-link/us-central1/fnReintentFalabellaOrders";
+const URL = "https://us-central1-chazki-link.cloudfunctions.net/fnReintentFalabellaOrders";
 
 const config = {
 	headers: {
