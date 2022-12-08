@@ -106,7 +106,7 @@ const updateIntegrationLogs = async (orders, queryUpdate) => {
 
 const run = async () => {
 	console.log(
-		new Date(),
+		new Date().toLocaleString(),
 		"=> Inicio de proceso de envio de estados de Falabella",
 	);
 	arrResponse = [];
@@ -134,7 +134,7 @@ const run = async () => {
 			await updateIntegrationLogs(arrDone, queryUpdateIntegrationLogs);
 		}
 	}
-	console.log(new Date(), "=> Proceso finalizado");
+	console.log(new Date().toLocaleString(), "=> Proceso finalizado");
 };
 
 run();
