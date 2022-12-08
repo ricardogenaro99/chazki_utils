@@ -3,7 +3,7 @@ const axios = require("axios");
 const fs = require("fs");
 const DATA_ESTATIC = require("./data");
 const { newClientNintendo, newClientNintendoData } = require("./db");
-const { queryUpdateIntegrationLogs, queryCountOrders } = require("./querys");
+const { queryUpdateIntegrationLogs, queryGetOrders } = require("./querys");
 
 let DATA = [];
 let arrResponse = [];
@@ -25,7 +25,7 @@ const getData = async () => {
 		try {
 			console.log("Trayendo ordenes de IntegrationLogs...");
 			await clientNintendoData.connect();
-			const trackCodes = await clientNintendoData.query(queryCountOrders());
+			const trackCodes = await clientNintendoData.query(queryGetOrders());
 			DATA.push(...trackCodes.rows.map((e) => e.trackCode));
 		} catch (error) {
 			console.error({ function: "getData => client", error });
