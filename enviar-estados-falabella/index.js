@@ -8,7 +8,8 @@ const { queryUpdateIntegrationLogs, queryCountOrders } = require("./querys");
 let DATA = [];
 let arrResponse = [];
 
-// const URL = "http://localhost:5001/chazki-link/us-central1/fnReintentFalabellaOrders";
+// const URL =
+// 	"http://localhost:5001/chazki-link/us-central1/fnReintentFalabellaOrders";
 const URL =
 	"https://us-central1-chazki-link.cloudfunctions.net/fnReintentFalabellaOrders";
 
@@ -104,16 +105,17 @@ const updateIntegrationLogs = async (orders, queryUpdate) => {
 };
 
 const run = async () => {
+	console.log(
+		new Date(),
+		"=> Inicio de proceso de envio de estados de Falabella",
+	);
 	arrResponse = [];
-
 	if (DATA_ESTATIC.length === 0) {
 		await getData();
 	} else {
 		DATA = DATA_ESTATIC;
 	}
-
-	console.log(new Date(), "=>", "Se encontraron", DATA.length, "ordenes");
-
+	console.log("Se encontraron", DATA.length, "ordenes");
 	if (DATA.length !== 0) {
 		await sendOrders(DATA);
 
@@ -132,6 +134,7 @@ const run = async () => {
 			await updateIntegrationLogs(arrDone, queryUpdateIntegrationLogs);
 		}
 	}
+	console.log(new Date(), "=> Proceso finalizado");
 };
 
 run();
