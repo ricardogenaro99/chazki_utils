@@ -125,13 +125,12 @@ const run = async () => {
 		await sendOrders(DATA);
 	}
 
-	const arrDone = generateArrDoneError(arrResponse, "Done");
 	const arrLastDone = generateArrDoneError(arrLastResponse, "Done");
 	const arrLastError = generateArrDoneError(arrLastResponse, "Error");
 
-	fs.writeFileSync("./logs/result.log", JSON.stringify(arrResponse, null, 2));
-	fs.writeFileSync("./logs/done.log", JSON.stringify(arrDone, null, 2));
-	fs.writeFileSync("./logs/error.log", JSON.stringify(arrLastError, null, 2));
+	await fs.writeFileSync("./logs/result.log", JSON.stringify(arrResponse, null, 2));
+	await fs.writeFileSync("./logs/done.log", JSON.stringify(arrLastDone, null, 2));
+	await fs.writeFileSync("./logs/error.log", JSON.stringify(arrLastError, null, 2));
 
 	if (arrLastDone.length > 0) {
 		await updateIntegrationLogs(arrLastDone, queryUpdateIntegrationLogs);
