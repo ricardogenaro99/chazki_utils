@@ -1,12 +1,16 @@
 require("dotenv").config();
 const axios = require("axios");
 const fs = require("fs");
-const DATA = require("./data");
-const { newClientNintendo } = require("./db");
-const { queryUpdateIntegrationLogs } = require("./querys");
+const DATA_ESTATIC = require("./data");
+const { newClientNintendo, newClientNintendoData } = require("./db");
+const { queryUpdateIntegrationLogs, queryCountOrders } = require("./querys");
 
-//const URL = "http://localhost:5001/chazki-link/us-central1/fnReintentFalabellaOrders";
-const URL = "https://us-central1-chazki-link.cloudfunctions.net/fnReintentFalabellaOrders";
+let DATA = [];
+let arrResponse = [];
+
+// const URL = "http://localhost:5001/chazki-link/us-central1/fnReintentFalabellaOrders";
+const URL =
+	"https://us-central1-chazki-link.cloudfunctions.net/fnReintentFalabellaOrders";
 
 const config = {
 	headers: {
@@ -14,7 +18,24 @@ const config = {
 	},
 };
 
-const arrResponse = [];
+const getData = async () => {
+	try {
+		const clientNintendoData = newClientNintendoData();
+		try {
+			console.log("Trayendo ordenes de IntegrationLogs...");
+			await clientNintendoData.connect();
+			const trackCodes = await clientNintendoData.query(queryCountOrders());
+			DATA.push(...trackCodes.rows.map((e) => e.trackCode));
+		} catch (error) {
+			console.error({ function: "getData => client", error });
+		} finally {
+			console.log("Cerrando cliente de IntegracionLogs...");
+			await clientNintendoData.end();
+		}
+	} catch (error) {
+		console.error({ function: "getData", error });
+	}
+};
 
 const contador = (num, order, status) => {
 	console.log(
@@ -83,21 +104,38 @@ const updateIntegrationLogs = async (orders, queryUpdate) => {
 };
 
 const run = async () => {
-	await sendOrders(DATA);
-	const arrDone = arrResponse
-		.filter((e) => e.status === "Done")
-		.map((e) => e.order);
+	arrResponse = [];
 
-	const arrError = arrResponse
-		.filter((e) => e.status === "Error")
-		.map((e) => e.order);
+	if (DATA_ESTATIC.length === 0) {
+		await getData();
+	} else {
+		DATA = DATA_ESTATIC;
+	}
 
-	fs.writeFileSync("./logs/done.log", JSON.stringify(arrDone, null, 2));
-	fs.writeFileSync("./logs/error.log", JSON.stringify(arrError, null, 2));
+	console.log(new Date(), "=>", "Se encontraron", DATA.length, "ordenes");
 
-	if (arrDone.length > 0) {
-		await updateIntegrationLogs(arrDone, queryUpdateIntegrationLogs);
+	if (DATA.length !== 0) {
+		await sendOrders(DATA);
+
+		const arrDone = arrResponse
+			.filter((e) => e.status === "Done")
+			.map((e) => e.order);
+
+		const arrError = arrResponse
+			.filter((e) => e.status === "Error")
+			.map((e) => e.order);
+
+		fs.writeFileSync("./logs/done.log", JSON.stringify(arrDone, null, 2));
+		fs.writeFileSync("./logs/error.log", JSON.stringify(arrError, null, 2));
+
+		if (arrDone.length > 0) {
+			await updateIntegrationLogs(arrDone, queryUpdateIntegrationLogs);
+		}
 	}
 };
 
 run();
+
+setInterval(() => {
+	run();
+}, 15 * 60 * 1000);
