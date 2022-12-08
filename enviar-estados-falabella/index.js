@@ -2,11 +2,12 @@ require("dotenv").config();
 const axios = require("axios");
 const fs = require("fs");
 const DATA_ESTATIC = require("./data");
-const { newClientNintendo, newClientNintendoData } = require("./db");
+const { newClientNintendo } = require("./db");
 const { queryUpdateIntegrationLogs, queryGetOrders } = require("./querys");
 
 let DATA = [];
 let arrResponse = [];
+let arrLastResponse = [];
 
 // const URL =
 // 	"http://localhost:5001/chazki-link/us-central1/fnReintentFalabellaOrders";
@@ -21,17 +22,17 @@ const config = {
 
 const getData = async () => {
 	try {
-		const clientNintendoData = newClientNintendoData();
+		const client = newClientNintendo();
 		try {
 			console.log("Trayendo ordenes de IntegrationLogs...");
-			await clientNintendoData.connect();
-			const trackCodes = await clientNintendoData.query(queryGetOrders());
+			await client.connect();
+			const trackCodes = await client.query(queryGetOrders());
 			DATA.push(...trackCodes.rows.map((e) => e.trackCode));
 		} catch (error) {
 			console.error({ function: "getData => client", error });
 		} finally {
 			console.log("Cerrando cliente de IntegracionLogs...");
-			await clientNintendoData.end();
+			await client.end();
 		}
 	} catch (error) {
 		console.error({ function: "getData", error });
@@ -47,6 +48,7 @@ const contador = (num, order, status) => {
 const sendOrders = async (orders = []) => {
 	console.log("Ordenes a enviar =>", orders.length);
 	let status = "";
+	let response = "";
 
 	for (let index in orders) {
 		const num = (Number(index) * 100 + 100) / orders.length;
@@ -57,38 +59,34 @@ const sendOrders = async (orders = []) => {
 				config,
 			);
 			status = "Done";
-			arrResponse.push({
-				status,
-				order: orders[index],
-				response: { status: result.status, data: result.data },
-			});
+			response = { status: result.status, data: result.data };
 		} catch (error) {
 			status = "Error";
-			arrResponse.push({
+			response = error.response ? error.response.data : "Internal error";
+		} finally {
+			const res = {
 				status,
 				order: orders[index],
-				response: error.response ? error.response.data : "Internal error",
-			});
-		} finally {
+				response,
+				date: new Date().toLocaleString(),
+			};
+			arrResponse.push(res);
+			arrLastResponse.push(res);
 			contador(num, orders[index], status);
 		}
 	}
-	await fs.writeFileSync(
-		"./logs/result.log",
-		JSON.stringify(arrResponse, null, 2),
-	);
 };
 
 const updateIntegrationLogs = async (orders, queryUpdate) => {
 	console.log("Actualizar tabla IntegrationLogs =>", orders.length);
-	const clientNintendo = newClientNintendo();
+	const client = newClientNintendo();
 	try {
-		await clientNintendo.connect();
+		await client.connect();
 		let status = "";
 		for (let index in orders) {
 			const num = (Number(index) * 100 + 100) / orders.length;
 			try {
-				await clientNintendo.query(queryUpdate(orders[index]));
+				await client.query(queryUpdate(orders[index]));
 				status = "Done";
 			} catch (error) {
 				status = "Error";
@@ -100,8 +98,14 @@ const updateIntegrationLogs = async (orders, queryUpdate) => {
 	} catch (error) {
 		console.error(error);
 	} finally {
-		clientNintendo.end();
+		client.end();
 	}
+};
+
+const generateArrDoneError = (arr, status) => {
+	return [
+		...new Set(arr.filter((e) => e.status === status).map((e) => e.order)),
+	];
 };
 
 const run = async () => {
@@ -109,31 +113,30 @@ const run = async () => {
 		new Date().toLocaleString(),
 		"=> Inicio de proceso de envio de estados de Falabella",
 	);
-	arrResponse = [];
-	if (DATA_ESTATIC.length === 0) {
-		await getData();
-	} else {
-		DATA = DATA_ESTATIC;
-	}
+
+	arrLastResponse = [];
+
+	if (DATA_ESTATIC.length === 0) await getData();
+	else DATA = DATA_ESTATIC;
+
 	console.log("Se encontraron", DATA.length, "ordenes");
+
 	if (DATA.length !== 0) {
 		await sendOrders(DATA);
-
-		const arrDone = arrResponse
-			.filter((e) => e.status === "Done")
-			.map((e) => e.order);
-
-		const arrError = arrResponse
-			.filter((e) => e.status === "Error")
-			.map((e) => e.order);
-
-		fs.writeFileSync("./logs/done.log", JSON.stringify(arrDone, null, 2));
-		fs.writeFileSync("./logs/error.log", JSON.stringify(arrError, null, 2));
-
-		if (arrDone.length > 0) {
-			await updateIntegrationLogs(arrDone, queryUpdateIntegrationLogs);
-		}
 	}
+
+	const arrDone = generateArrDoneError(arrResponse, "Done");
+	const arrLastDone = generateArrDoneError(arrLastResponse, "Done");
+	const arrLastError = generateArrDoneError(arrLastResponse, "Error");
+
+	fs.writeFileSync("./logs/result.log", JSON.stringify(arrResponse, null, 2));
+	fs.writeFileSync("./logs/done.log", JSON.stringify(arrDone, null, 2));
+	fs.writeFileSync("./logs/error.log", JSON.stringify(arrLastError, null, 2));
+
+	if (arrLastDone.length > 0) {
+		await updateIntegrationLogs(arrLastDone, queryUpdateIntegrationLogs);
+	}
+
 	console.log(new Date().toLocaleString(), "=> Proceso finalizado");
 };
 
@@ -141,4 +144,4 @@ run();
 
 setInterval(() => {
 	run();
-}, 15 * 60 * 1000);
+}, 10 * 60 * 1000);
