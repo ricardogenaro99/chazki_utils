@@ -129,9 +129,9 @@ const run = async () => {
 	const arrLastDone = generateArrDoneError(arrLastResponse, "Done");
 	const arrLastError = generateArrDoneError(arrLastResponse, "Error");
 
-	await fs.writeFileSync("./logs/result.log", JSON.stringify(arrResponse, null, 2));
-	await fs.writeFileSync("./logs/done.log", JSON.stringify(arrLastDone, null, 2));
-	await fs.writeFileSync("./logs/error.log", JSON.stringify(arrLastError, null, 2));
+	fs.writeFileSync("./logs/result.log", JSON.stringify(arrResponse, null, 2));
+	fs.writeFileSync("./logs/done.log", JSON.stringify(arrLastDone, null, 2));
+	fs.writeFileSync("./logs/error.log", JSON.stringify(arrLastError, null, 2));
 
 	if (arrLastDone.length > 0) {
 		await updateIntegrationLogs(arrLastDone, queryUpdateIntegrationLogs);
@@ -144,4 +144,4 @@ run();
 
 setInterval(() => {
 	run();
-}, 10 * 60 * 1000);
+}, 20 * 60 * 1000);
