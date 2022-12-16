@@ -1,18 +1,17 @@
 const runTableIntegrationLogs = require("./tableIntegrationLogs");
 const runTableOrders = require("./tableOrders");
 const { TIME_INTERVAL } = require("./generalConst");
-let { EXECUTION_DATE } = require("./generalConst");
 
 const run = async () => {
-	EXECUTION_DATE = new Date();
+	const date = new Date();
 	console.log(
-		EXECUTION_DATE.toLocaleString(),
+		date.toLocaleString(),
 		"=> INICIO DE PROCESO DE ENVIO DE ESTADOS DE FALABELLA",
 	);
 
 	try {
-		await runTableIntegrationLogs();
-		await runTableOrders();
+		await runTableIntegrationLogs(date);
+		await runTableOrders(date);
 	} catch (error) {
 		console.error(error);
 	}

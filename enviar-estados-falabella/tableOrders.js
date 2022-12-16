@@ -1,4 +1,3 @@
-require("dotenv").config();
 const DATA_ESTATIC = require("./data");
 const { newClientNintendo } = require("./db");
 const { queryGetTrackCodesFromOrders } = require("./querys");
@@ -7,7 +6,6 @@ const {
 	generateArrDoneError,
 	generateLog,
 } = require("./generalFunctions");
-let { EXECUTION_DATE } = require("./generalConst");
 
 let DATA = [];
 let arrResponse = [];
@@ -32,7 +30,7 @@ const getData = async () => {
 	}
 };
 
-const runTableOrders = async () => {
+const runTableOrders = async (date) => {
 	console.log(
 		new Date().toLocaleString(),
 		"=> Inicio de proceso en tabla Orders",
@@ -53,15 +51,16 @@ const runTableOrders = async () => {
 	const arrLastDone = generateArrDoneError(arrLastResponse, "Done");
 	const arrLastError = generateArrDoneError(arrLastResponse, "Error");
 
-	const nameDate = EXECUTION_DATE.toLocaleDateString()
+	const nameDate = date.toLocaleDateString()
 		.split("/")
 		.reverse()
 		.join(".");
-	const nameTime = EXECUTION_DATE.toLocaleTimeString().replaceAll(":", ".");
+	const nameTime = date.toLocaleTimeString().replaceAll(":", ".");
 
 	const name = nameDate + "-" + nameTime;
 
-	generateLog(`./logs/Orders/result-${name}.log`, arrResponse);
+	generateLog(`./logs/Orders/result.log`, arrResponse);
+	generateLog(`./logs/Orders/result-${name}.log`, arrLastResponse);
 	generateLog(`./logs/Orders/done-${name}.log`, arrLastDone);
 	generateLog(`./logs/Orders/error-${name}.log`, arrLastError);
 

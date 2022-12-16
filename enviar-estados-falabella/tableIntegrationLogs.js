@@ -1,4 +1,3 @@
-require("dotenv").config();
 const DATA_ESTATIC = require("./data");
 const { newClientNintendo } = require("./db");
 const {
@@ -11,7 +10,6 @@ const {
 	generateLog,
 	contador,
 } = require("./generalFunctions");
-let { EXECUTION_DATE } = require("./generalConst");
 
 let DATA = [];
 let arrResponse = [];
@@ -63,7 +61,7 @@ const updateIntegrationLogs = async (orders, queryUpdate) => {
 	}
 };
 
-const runTableIntegrationLogs = async () => {
+const runTableIntegrationLogs = async (date) => {
 	console.log(
 		new Date().toLocaleString(),
 		"=> Inicio de proceso en tabla IntegrationLogs",
@@ -84,15 +82,16 @@ const runTableIntegrationLogs = async () => {
 	const arrLastDone = generateArrDoneError(arrLastResponse, "Done");
 	const arrLastError = generateArrDoneError(arrLastResponse, "Error");
 
-	const nameDate = EXECUTION_DATE.toLocaleDateString()
+	const nameDate = date.toLocaleDateString()
 		.split("/")
 		.reverse()
 		.join(".");
-	const nameTime = EXECUTION_DATE.toLocaleTimeString().replaceAll(":", ".");
+	const nameTime = date.toLocaleTimeString().replaceAll(":", ".");
 
 	const name = nameDate + "-" + nameTime;
 
-	generateLog(`./logs/IntegrationLogs/result-${name}.log`, arrResponse);
+	generateLog(`./logs/IntegrationLogs/result.log`, arrResponse);
+	generateLog(`./logs/IntegrationLogs/result-${name}.log`, arrLastResponse);
 	generateLog(`./logs/IntegrationLogs/done-${name}.log`, arrLastDone);
 	generateLog(`./logs/IntegrationLogs/error-${name}.log`, arrLastError);
 
