@@ -39,4 +39,4 @@ const resumen = lastOrdersSend.map((e) => {
 const code_99 = resumen.filter((e) => e.LastStatusCodeSend === 99);
 const code_1026 = resumen.filter((e) => e.LastStatusCodeSend === 1026);
 
-console.log(code_99.length, code_1026.length);
+console.log(code_1026.map((e) => e.TrackCode));

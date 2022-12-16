@@ -12,7 +12,7 @@ const arrResult = {
 
 const DATA = trackcodes.map((e) => {
 	// RECUERDEN CAMBIAR EL WAREHOUSEID, ENTERPRISEID Y CITYID SEGUN LO QUE NECESITEN
-	return { warehouseID: 0, enterpriseId: 0, trackcode: e, cityID: 0 };
+	return { warehouseID: 88, enterpriseId: 4396, trackcode: e, cityID: 6 };
 });
 
 const run = async () => {

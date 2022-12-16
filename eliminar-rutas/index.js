@@ -13,7 +13,8 @@ const config = {
 	},
 };
 
-const routesID = [];
+const routesID = [69962
+];
 
 const variables = routesID.map((id) => {
 	return {
