@@ -13,7 +13,10 @@ const queryGetTrackCodesFromIntegrationLogs = () => {
 };
 
 const queryGetTrackCodesFromOrders = () => {
-	const query = `select "trackCode", "statusID"  from "Orders" o where "enterpriseID" = 4396  and "updatedAt" between (now() - interval '${TIME_INTERVAL} minute') and now();`;
+	const query = `select  o."trackCode", o."statusID"  from "Orders" o where o."enterpriseID" = 4396  
+	and o."statusID" in (SELECT ebbsh."statusID"  from "EnterprisesBodyByStateHooks" ebbsh where ebbsh."enterpriseID" = 4396)
+	and o."updatedAt" between (now() - interval '${TIME_INTERVAL}  minute') and now();`
+
 	return query;
 };
 
