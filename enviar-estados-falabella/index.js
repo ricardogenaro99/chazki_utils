@@ -1,6 +1,8 @@
 const runTableIntegrationLogs = require("./tableIntegrationLogs");
 const runTableOrders = require("./tableOrders");
+const runStaticOrders = require("./staticOrders");
 const { TIME_INTERVAL } = require("./generalConst");
+const DATA_ESTATIC = require("./data");
 
 const run = async () => {
 	const date = new Date();
@@ -10,8 +12,12 @@ const run = async () => {
 	);
 
 	try {
-		await runTableIntegrationLogs(date);
-		await runTableOrders(date);
+		if (DATA_ESTATIC.length === 0) {
+			await runTableIntegrationLogs(date);
+			await runTableOrders(date);
+		} else {
+			await runStaticOrders(date);
+		}
 	} catch (error) {
 		console.error(error);
 	}

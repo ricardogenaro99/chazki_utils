@@ -5,6 +5,4 @@ const FUNCTION_URL =
 
 const TIME_INTERVAL = 15;
 
-let EXECUTION_DATE = new Date();
-
-module.exports = { FUNCTION_URL, TIME_INTERVAL, EXECUTION_DATE };
+module.exports = { FUNCTION_URL, TIME_INTERVAL };

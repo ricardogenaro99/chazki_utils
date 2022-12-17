@@ -1,4 +1,3 @@
-const DATA_ESTATIC = require("./data");
 const { newClientNintendo } = require("./db");
 const { queryGetTrackCodesFromOrders } = require("./querys");
 const {
@@ -39,8 +38,7 @@ const runTableOrders = async (date) => {
 	arrLastResponse = [];
 	DATA = [];
 
-	if (DATA_ESTATIC.length === 0) await getData();
-	else DATA = DATA_ESTATIC;
+	await getData();
 
 	console.log("Se encontraron", DATA.length, "ordenes");
 
