@@ -27,6 +27,8 @@ const run = async () => {
 
 run();
 
-setInterval(() => {
-	run();
-}, TIME_INTERVAL * 60 * 1000);
+if (DATA_ESTATIC.length === 0) {
+	setInterval(() => {
+		run();
+	}, TIME_INTERVAL * 60 * 1000);
+}
