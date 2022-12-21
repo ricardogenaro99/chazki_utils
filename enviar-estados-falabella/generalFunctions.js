@@ -22,7 +22,7 @@ const contador = (num, order, status) => {
 	}
 };
 
-const sendOrders = async (orders = [], arrResponse, arrLastResponse) => {
+const sendOrders = async (orders, arrResponse, arrLastResponse) => {
 	console.log("Ordenes a enviar =>", orders.length);
 	let status = "";
 	let response = "";

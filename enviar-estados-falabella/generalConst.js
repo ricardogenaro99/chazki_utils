@@ -3,6 +3,6 @@
 const FUNCTION_URL =
 	"https://us-central1-chazki-link.cloudfunctions.net/fnReintentFalabellaOrders";
 
-const TIME_INTERVAL = 15;
+const TIME_INTERVAL = process.env.TIME_INTERVAL || 10;
 
 module.exports = { FUNCTION_URL, TIME_INTERVAL };
