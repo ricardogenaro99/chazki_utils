@@ -1,42 +1,49 @@
-const bigQuery = require("./bigQuery.json");
+require("dotenv").config();
+const dayjs = require("dayjs");
+const {
+	addValidDate,
+	groupTrackCodes,
+	addOrderServiceHistorial,
+	generateLog,
+} = require("./functions");
+const dataBigQuery = require("./dataBigQuery");
 
-const lastOrdersSend = [];
+const dataParse = dataBigQuery.map(
+	({ TrackCode, DateRequest, InfoRequest, InfoResponse, StatusResponse }) => {
+		const DateRequestParse = dayjs(DateRequest)
+			.subtract(5, "h")
+			.toDate()
+			.toString();
 
-const bigQueryTmp = bigQuery.map((e) => {
-	const InfoRequest = JSON.parse(e.InfoRequest);
-	return {
-		...e,
-		InfoRequest,
-	};
+		const InfoRequestParse = JSON.parse(InfoRequest);
+
+		return {
+			TrackCode,
+			DateRequestGCP: DateRequest,
+			DateRequest: DateRequestParse,
+			InfoRequest: InfoRequestParse,
+			InfoResponse,
+			StatusResponse,
+			StatusOrderSend: InfoRequestParse.status.code,
+		};
+	},
+);
+
+// // const dataResumenErrors = [];
+// // const dataResumenSuccess = [];
+
+const dataResumen = dataParse.map((e) => {
+	// // const InfoRequest = { ...e.InfoRequest };
+	delete e.InfoRequest;
+	// // if (e.StatusResponse !== "200") dataResumenErrors.push({ ...e, InfoRequest });
+	// // else dataResumenSuccess.push(e);
+	return e;
 });
 
-bigQueryTmp.forEach((e) => {
-	const pos = lastOrdersSend.findIndex(
-		(e_tmp) => e_tmp.TrackCode === e.TrackCode,
-	);
+const dataResumenDateReq = addValidDate(dataResumen);
 
-	if (pos === -1) {
-		lastOrdersSend.push(e);
-		return;
-	}
+// // groupTrackCodes(dataResumenDateReq)
 
-	if (new Date(lastOrdersSend[pos].DateRequest) > new Date(e.DateRequest)) {
-		return;
-	}
-
-	lastOrdersSend[pos] = { ...e };
-});
-
-const resumen = lastOrdersSend.map((e) => {
-	return {
-		TrackCode: e.TrackCode,
-		LastStatusCodeSend: e.InfoRequest.status.code,
-		DateRequest: e.DateRequest,
-		StatusResponse: e.StatusResponse,
-	};
-});
-
-const code_99 = resumen.filter((e) => e.LastStatusCodeSend === 99);
-const code_1026 = resumen.filter((e) => e.LastStatusCodeSend === 1026);
-
-console.log(code_1026.map((e) => e.TrackCode));
+addOrderServiceHistorial(groupTrackCodes(dataResumenDateReq))
+	.then((e) => generateLog("result.log", e))
+	.catch((error) => console.error(error));
