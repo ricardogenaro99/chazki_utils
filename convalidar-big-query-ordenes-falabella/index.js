@@ -1,22 +1,18 @@
 require("dotenv").config();
-const dayjs = require("dayjs");
 const {
 	addValidDate,
 	groupTrackCodes,
-	addOrderServiceHistorial,
 	generateLog,
+	renderDate,
+	generateLogWithOrderServiceHistorial,
+	deleteInfoRequest,
 } = require("./functions");
 const dataBigQuery = require("./dataBigQuery");
 
 const dataParse = dataBigQuery.map(
 	({ TrackCode, DateRequest, InfoRequest, InfoResponse, StatusResponse }) => {
-		const DateRequestParse = dayjs(DateRequest)
-			.subtract(5, "h")
-			.toDate()
-			.toString();
-
+		const DateRequestParse = renderDate(DateRequest);
 		const InfoRequestParse = JSON.parse(InfoRequest);
-
 		return {
 			TrackCode,
 			DateRequestGCP: DateRequest,
@@ -29,21 +25,34 @@ const dataParse = dataBigQuery.map(
 	},
 );
 
-// // const dataResumenErrors = [];
-// // const dataResumenSuccess = [];
+const run = async () => {
+	try {
+		const dataResumenValidDate = addValidDate(dataParse);
 
-const dataResumen = dataParse.map((e) => {
-	// // const InfoRequest = { ...e.InfoRequest };
-	delete e.InfoRequest;
-	// // if (e.StatusResponse !== "200") dataResumenErrors.push({ ...e, InfoRequest });
-	// // else dataResumenSuccess.push(e);
-	return e;
-});
+		const dataResumenErrorsValidDate = dataResumenValidDate.filter(
+			(e) => e.StatusResponse !== "200",
+		);
+		const dataResumenSuccessValidDate = dataResumenValidDate.filter(
+			(e) => e.StatusResponse === "200",
+		);
 
-const dataResumenDateReq = addValidDate(dataResumen);
+		generateLog(
+			"resultErrors.log",
+			groupTrackCodes(dataResumenErrorsValidDate),
+		);
 
-// // groupTrackCodes(dataResumenDateReq)
+		await generateLogWithOrderServiceHistorial(
+			"result.log",
+			groupTrackCodes(deleteInfoRequest(dataResumenValidDate)),
+		);
 
-addOrderServiceHistorial(groupTrackCodes(dataResumenDateReq))
-	.then((e) => generateLog("result.log", e))
-	.catch((error) => console.error(error));
+		generateLog(
+			"resultSuccess.log",
+			groupTrackCodes(deleteInfoRequest(dataResumenSuccessValidDate)),
+		);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+run();

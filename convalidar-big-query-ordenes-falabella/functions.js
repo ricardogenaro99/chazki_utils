@@ -77,8 +77,20 @@ async function addOrderServiceHistorial(arr = []) {
 	);
 }
 
-function generateLog(fullName, arrData) {
-	fs.writeFileSync(fullName, JSON.stringify(arrData, null, 2));
+function generateLog(fileName, arr) {
+	fs.writeFileSync("./logs/" + fileName, JSON.stringify(arr, null, 2));
+}
+
+async function generateLogWithOrderServiceHistorial(fileName, arr) {
+	const res = await addOrderServiceHistorial(arr);
+	generateLog(fileName, res);
+}
+
+function deleteInfoRequest(arr) {
+	return arr.map((e) => {
+		delete e.InfoRequest;
+		return e;
+	});
 }
 
 module.exports = {
@@ -86,4 +98,7 @@ module.exports = {
 	groupTrackCodes,
 	addOrderServiceHistorial,
 	generateLog,
+	renderDate,
+	generateLogWithOrderServiceHistorial,
+	deleteInfoRequest,
 };
