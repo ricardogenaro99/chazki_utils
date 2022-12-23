@@ -55,7 +55,7 @@ const run = async () => {
 
 		generateLog("resultSuccess.log", groupResumenSuccess);
 
-		generateCSV(groupResumenOSH);
+		await generateCSV(groupResumenOSH);
 	} catch (error) {
 		console.error(error);
 	}

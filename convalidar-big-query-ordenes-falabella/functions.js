@@ -1,5 +1,6 @@
 const fs = require("fs");
 const dayjs = require("dayjs");
+const ObjectsToCsv = require("objects-to-csv");
 const REVIEW_TIME = dayjs(process.env.REVIEW_TIME);
 const { newClientNintendo } = require("./db");
 const { queryGetOrderServiceHistorial } = require("./querys");
@@ -93,30 +94,37 @@ function deleteInfoRequest(arr) {
 	});
 }
 
-function generateCSV(result) {
-	const obj = result.map((e) => {
-		console.log(e);
-		return e.StatusHistorial.map((s) => {
-			console.log(e.OrderServiceHistorial);
-			const orderServiceHistorial = e.OrderServiceHistorial.find(
-				(o) => o.falabellaStatusCode == s.StatusOrderSend,
-			);
+async function generateCSV(result) {
+	const data = result
+		.map((e) => {
+			return e.StatusHistorial.map((s) => {
+				const orderServiceHistorial = e.OrderServiceHistorial.find(
+					(o) => o.falabellaStatusCode == s.StatusOrderSend,
+				);
 
-			const body = {
-				TrackCode: e.TrackCode,
-				StatusOrderSend: s.StatusOrderSend,
-				DateRequest: s.DateRequest,
-				DateNintendo: orderServiceHistorial?.createdAt,
-				InfoResponse: s.InfoResponse,
-				StatusResponse: s.StatusResponse,
-				ValidDate: s.ValidDate,
-			};
+				const infoResponse = JSON.parse(s.InfoResponse);
+				const body = {
+					TrackCode: e.TrackCode,
+					StatusOrderSend: s.StatusOrderSend,
+					DateRequest: s.DateRequest,
+					DateNintendo: orderServiceHistorial?.createdAt,
+					InfoResponseCode: infoResponse.code,
+					InfoResponseMessage: infoResponse.message,
+					InfoResponseErrors: infoResponse.errors,
+					StatusResponse: s.StatusResponse,
+					ValidDate: s.ValidDate,
+				};
 
-			return body;
-		});
-	}).flat(1);
+				return body;
+			});
+		})
+		.flat(1);
 
-	console.log(obj)
+	const csv = new ObjectsToCsv(data);
+	const csvString = (await csv.toString()).replaceAll(",", ";");
+	fs.writeFile("./logs/result.csv", csvString, "utf-8", (err) => {
+		if (err) console.log(err);
+	});
 }
 
 module.exports = {
