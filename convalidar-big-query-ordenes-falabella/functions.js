@@ -43,7 +43,6 @@ async function getOrderServiceHistorial(trackCode) {
 		return {
 			...f,
 			createdAt: renderDate(f.createdAt, 0),
-			updatedAt: renderDate(f.updatedAt, 0),
 		};
 	});
 }
@@ -84,6 +83,7 @@ function generateLog(fileName, arr) {
 async function generateLogWithOrderServiceHistorial(fileName, arr) {
 	const res = await addOrderServiceHistorial(arr);
 	generateLog(fileName, res);
+	return res;
 }
 
 function deleteInfoRequest(arr) {
@@ -91,6 +91,32 @@ function deleteInfoRequest(arr) {
 		delete e.InfoRequest;
 		return e;
 	});
+}
+
+function generateCSV(result) {
+	const obj = result.map((e) => {
+		console.log(e);
+		return e.StatusHistorial.map((s) => {
+			console.log(e.OrderServiceHistorial);
+			const orderServiceHistorial = e.OrderServiceHistorial.find(
+				(o) => o.falabellaStatusCode == s.StatusOrderSend,
+			);
+
+			const body = {
+				TrackCode: e.TrackCode,
+				StatusOrderSend: s.StatusOrderSend,
+				DateRequest: s.DateRequest,
+				DateNintendo: orderServiceHistorial?.createdAt,
+				InfoResponse: s.InfoResponse,
+				StatusResponse: s.StatusResponse,
+				ValidDate: s.ValidDate,
+			};
+
+			return body;
+		});
+	}).flat(1);
+
+	console.log(obj)
 }
 
 module.exports = {
@@ -101,4 +127,5 @@ module.exports = {
 	renderDate,
 	generateLogWithOrderServiceHistorial,
 	deleteInfoRequest,
+	generateCSV,
 };

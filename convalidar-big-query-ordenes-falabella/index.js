@@ -6,6 +6,7 @@ const {
 	renderDate,
 	generateLogWithOrderServiceHistorial,
 	deleteInfoRequest,
+	generateCSV,
 } = require("./functions");
 const dataBigQuery = require("./dataBigQuery");
 
@@ -41,15 +42,20 @@ const run = async () => {
 			groupTrackCodes(dataResumenErrorsValidDate),
 		);
 
-		await generateLogWithOrderServiceHistorial(
-			"result.log",
-			groupTrackCodes(deleteInfoRequest(dataResumenValidDate)),
+		const groupResumen = groupTrackCodes(
+			deleteInfoRequest(dataResumenValidDate),
 		);
 
-		generateLog(
-			"resultSuccess.log",
-			groupTrackCodes(deleteInfoRequest(dataResumenSuccessValidDate)),
+		const groupResumenSuccess = groupTrackCodes(dataResumenSuccessValidDate);
+
+		const groupResumenOSH = await generateLogWithOrderServiceHistorial(
+			"result.log",
+			groupResumen,
 		);
+
+		generateLog("resultSuccess.log", groupResumenSuccess);
+
+		generateCSV(groupResumenOSH);
 	} catch (error) {
 		console.error(error);
 	}
