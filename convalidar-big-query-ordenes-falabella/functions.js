@@ -112,7 +112,7 @@ async function generateCSV(result) {
 					InfoResponseMessage: infoResponse.message,
 					InfoResponseErrors: infoResponse.errors,
 					StatusResponse: s.StatusResponse,
-					ValidDate: s.ValidDate,
+					ValidDate: String(s.ValidDate),
 				};
 
 				return body;
