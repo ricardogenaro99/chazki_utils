@@ -27,6 +27,7 @@ const variables = ordersID.map((id) => {
 
 const run = async (variables) => {
 	const arrResponse = [];
+	console.log("Cantidad => ", variables.length);
 
 	for (let index in variables) {
 		const num = (Number(index) * 100 + 100) / variables.length;
