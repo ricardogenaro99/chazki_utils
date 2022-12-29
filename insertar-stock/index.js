@@ -18,7 +18,7 @@ const DATA = trackcodes.map((e) => {
 const run = async () => {
 	try {
 		console.info("Size =>", DATA.length);
-		client.connect();
+		await client.connect();
 		DATA.forEach(async (element, index) => {
 			try {
 				await client.query(query(element)).then((result) => {
@@ -45,6 +45,8 @@ const run = async () => {
 	} catch (error) {
 		arrResult.generalError.push({ error });
 		fs.writeFileSync("response.log", JSON.stringify(arrResult, null, 2));
+	} finally {
+		await client.end();
 	}
 };
 
