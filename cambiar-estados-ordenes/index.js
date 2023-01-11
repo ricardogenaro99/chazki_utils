@@ -19,7 +19,7 @@ const variables = ordersID.map((id) => {
 	return {
 		orderID: id,
 		dataUpdOrder: {
-			statusID: 170,
+			statusID: null,
 			incidenceID: null,
 		},
 	};

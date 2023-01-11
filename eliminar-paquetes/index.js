@@ -4,7 +4,7 @@ const client = require("./db");
 const queryDelete = require("./querys");
 
 // Orders ID
-const DATA = [1349911, 1349929, 1349930, 1349912];
+const DATA = [];
 
 const generateLoader = (index, type = "DONE") => {
 	const num = (Number(index) * 100 + 100) / DATA.length;

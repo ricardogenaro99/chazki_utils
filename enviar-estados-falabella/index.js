@@ -14,7 +14,7 @@ const run = async () => {
 	try {
 		if (DATA_ESTATIC.length === 0) {
 			await runTableIntegrationLogs(date);
-			// // await runTableOrders(date);
+			await runTableOrders(date);
 		} else {
 			await runStaticOrders(date);
 		}
